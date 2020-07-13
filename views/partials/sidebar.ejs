@@ -1,0 +1,139 @@
+<!-- Sidebar -->
+<link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="http://cnscanner.herokuapp.com">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <img src="https://firebasestorage.googleapis.com/v0/b/cn-scanner.appspot.com/o/smallLogo.png?alt=media&token=bc6d5b9a-57e0-4876-919a-46b69874bc06" style="height:45px; width:45px" ; />
+        </div>
+        <div class="sidebar-brand-text mx-3">CN Scanner<sup></sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="http://cnscanner.herokuapp.com">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Tổng quan</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Quản lý danh mục
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="far fa-building"></i>
+            <span>Phòng</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý phòng</h6>
+                <a class="collapse-item" href="phong">Danh sách phòng</a>
+                <a class="collapse-item" href="phong/themphong">Thêm</a>
+            </div>
+        </div>
+    </li>
+
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-server"></i>
+            <span>Cơ sở vật chất</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý cơ sở vật chất</h6>
+                <a class="collapse-item" href="csvc">Danh sách CSVC</a>
+                <a class="collapse-item" href="csvc/themcsvc">Thêm mới</a>
+            </div>
+        </div>
+    </li>
+
+
+    <!-- Nav Item - Problem Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseError" aria-expanded="true" aria-controls="collapseError">
+            <i class="fas fa-bug"></i>
+            <span>Lỗi</span>
+        </a>
+        <div id="collapseError" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý danh mục lỗi</h6>
+                <a class="collapse-item" href="loi">Danh sách các loại lỗi</a>
+                <a class="collapse-item" href="loi/themloi">Thêm mới</a>
+            </div>
+        </div>
+    </li>
+
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Quản lý người dùng
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="http://cnscanner.herokuapp.com/taikhoan/">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Quản lý tài khoản</span>
+        </a>
+    </li>
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Quản lý báo cáo
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="http://cnscanner.herokuapp.com/baocao/">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Quản lý báo cáo</span>
+        </a>
+
+    </li>
+
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+    </li>
+
+    <!-- Nav Item - Tables -->
+    <li class="nav-item">
+        <a class="nav-link">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<!-- End of Sidebar -->
+
+<!-- Custom scripts for all pages-->
+<script src="assets/js/sb-admin-2.min.js"></script>
+
+<!-- Page level custom scripts -->

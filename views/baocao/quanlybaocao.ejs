@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Quản lý báo cáo - CN Scanner</title>
+    <LINK REL="SHORTCUT ICON" HREF="assets/img/logo.png">
+
+    <script defer src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+    <script defer src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
+    <script defer src="./init-firebase.js"></script>
+
+
+    <% include ../partials/head %>
+</head>
+
+<body id="page-top">
+
+    <% include ../partials/firebase %>
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <% include ../partials/sidebar %>
+
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <% include ../partials/topbar %>
+
+                            <!-- Begin Page Content -->
+                            <div class="container-fluid">
+
+                                <!-- Page Heading -->
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 id="title" class="h3 mb-0 text-gray-800">
+
+                                        <% if(title != ''){ %>
+                                            <%= title %>
+                                                <% } else { %>
+                                                    Quản lý báo cáo
+                                                    <% } %>
+
+
+                                    </h1>
+
+                                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary dropdown-toggle"       type="button"       id="dropdownMenuButton" data-toggle="dropdown">
+                                        Lọc
+                                           </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao">Tất cả</a>
+                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao/daxuly">Đã Xử Lý</a>
+                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao/dangxuly">Đang Xử Lý</a>
+                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao/chuaxuly">Chưa Xử Lý</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+                                <table class="table table-hover" style="color: #4166D5; font-size: 18px; background: white;">
+                                    <thead>
+
+
+                                        <tr style="color: #4166D5; font-size: 18px; background: white; ">
+                                            <th style="width: 3px; "></th>
+                                            <th>Mã Báo cáo</th>
+                                            <th>Phòng</th>
+                                            <th>Lỗi</th>
+                                            <th>Chi tiết</th>
+                                            <th>Thời gian</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        
+
+                                        <% reportList.forEach(function(bc) { %>
+                                            <% if(bc.get('TrangThai') == 'Đã xử lý'){ %>
+                                                <tr style="background-color: #dde843; font-style: initial; color: blue;">
+
+
+                                                    <% } else if(bc.get('TrangThai') == 'Đang xử lý'){ %>
+                                                        <tr style="background-color: #146bf7; font-style: initial; color: white;">
+
+
+                                                            <% } else {%>
+                                                                <tr style="background-color: #c90000; font-style: initial; color: white;">
+
+                                                                    <% } %>
+
+                                                                        <td style=" width: 3px; font-size: 20px; background: white; ">
+
+                                                                            <button id="bc<%= bc.get('Ma')%>" type="button" class="btn btn-primary" data-target="#dialogEdit" data-toggle="modal" onClick="edit(this.id)">
+                                                                <a style="color: white;" data-target="#dialogEdit" ><i class="fas fa-user-edit "></i></a>
+                                                            </button>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a id="ma<%= bc.get('Ma') %>" style="max-width: 50px;">
+                                                                                <%= bc.get('Ma') %>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a id="phong<%= bc.get('Ma') %>">
+                                                                                <%= bc.get('TenPhong') %>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a id="loi<%= bc.get('Ma') %>">
+                                                                                <%= bc.get('Loi') %>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td style="max-width: 370px;">
+                                                                            <a id="chitiet<%= bc.get('Ma') %>">
+                                                                                <%= bc.get('ChiTiet') %>
+                                                                            </a>
+                                                                            <a id="chuthich<%= bc.get('Ma') %>" hidden=true>
+                                                                                <%= bc.get('ChuThich') %>
+                                                                            </a>
+                                                                            <a id="mand<%= bc.get('Ma') %>" hidden=true>
+                                                                                <%= bc.get('MaND') %>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a id="thoigian<%= bc.get('Ma') %>">
+                                                                                <%= bc.get('ThoiGian') %>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a id="trangthai<%= bc.get('Ma') %>" style="font-weight: bold;">
+                                                                                <%= bc.get('TrangThai') %>
+                                                                            </a>
+                                                                            <p>
+                                                                                <%= test %></p>
+                                                                        </td>
+                                                                        <% }); %>
+
+
+                                    </tbody>
+
+
+                                </table>
+
+                            </div>
+                            <!-- End of Main Content -->
+
+
+
+                    </div>
+                    <!-- End of Content Wrapper -->
+
+                </div>
+                <!-- End of Page Wrapper -->
+
+                <div class="modal fade" id="dialogEdit" role="dialog" aria-hidden="true">
+
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 id="tt" style="margin-top: 10px;">Cập nhật báo cáo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="POST" action="http://cnscanner.herokuapp.com/baocao/capnhatbaocao">
+                                    <div class="form-group">
+                                        <label style="margin-left: 15px;">Mã Báo cáo:</label>
+                                        <label style="color: blue;" id='lblMa' class="control-label col-sm-5">Mã Báo cáo:</label>
+                                        <input type="text" class="form-control" id="edtMa" name="Ma" hidden=true>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="margin-left: 15px;">Ngày Tạo: </label>
+                                        <label style="color: blue;" id='lblThoiGian' class="control-label col-sm-5">Ngày Tạo</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="margin-left: 15px;">Phòng: </label>
+                                        <label style="color: blue;" id='lblPhong' class="control-label col-sm-5">Phòng </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="margin-left: 15px;">Lỗi: </label>
+                                        <label style="color: blue;" id='lblLoi' class="control-label col-sm-5">Lỗi </label>
+
+                                    </div>
+                                    <div class="form-group" aria-orientation="vertical">
+                                        <label class="control-label col-sm-6" for="description">Nội Dung Chi Tiết:</label>
+                                        <div class="col-sm-12">
+                                            <textarea id='edtChiTiet' class="form-control" rows="3" cols="60" name="ChiTiet" readonly></textarea>
+                                        </div>
+                                        </br>
+                                        <div class="form-group" aria-orientation="vertical">
+                                            <label style="margin-left: 15px;">Mã người dùng tạo báo cáo: </label>
+                                            <label style="color: blue;" id='lblMaND' class="control-label col-sm-6" for="description">Người tạo:</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" aria-orientation="vertical">
+                                        <label class="control-label col-sm-6" for="description">Chú Thích:</label>
+                                        <div class="col-sm-12">
+                                            <textarea type="text" id='edtChuThich' class="form-control" rows="3" cols="60" name="ChuThich" aria-multiline="true"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-6" for="title">Trạng thái:</label>
+                                        <div class="col-sm-10" style="font-weight: bold;">
+                                            <label style="color: #c90000;"><input id="tt1" type="radio" name="TrangThai" value="Chưa xử lý" checked=true> Chưa xử lý </label>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <label style="color: #146bf7;"><input id="tt2" type="radio" name="TrangThai" value="Đang xử lý"> Đang xử lý</label>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <label style="color: green;"><input id="tt3" type="radio" name="TrangThai" value="Đã xử lý"> Đã xử lý</label><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <input style="color: white; background: blue;" type="submit" class="btn btn-warning" value="Cập nhật">
+                                        <button id="btnCancel" type="button" class="btn btn-warning" style="background: #c90000; color: white;" data-dismiss="modal">
+                                  <span class='glyphicon glyphicon-remove'></span> Hủy
+                                </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <script>
+                    function edit(code) {
+                        let id = code.substring(2);
+                        let gt;
+                        document.getElementById("lblMa").innerHTML = id;
+                        document.getElementById("edtMa").value = id;
+
+                        gt = document.getElementById('thoigian' + id).textContent.trim();
+                        document.getElementById("lblThoiGian").innerHTML = gt;
+
+                        gt = document.getElementById('phong' + id).textContent.trim();
+                        document.getElementById("lblPhong").innerHTML = gt;
+
+                        gt = document.getElementById('loi' + id).textContent.trim();
+                        document.getElementById("lblLoi").innerHTML = gt;
+
+                        gt = document.getElementById('chitiet' + id).textContent.trim();
+                        document.getElementById("edtChiTiet").value = gt;
+
+                        gt = document.getElementById('chuthich' + id).textContent.trim();
+                        document.getElementById("edtChuThich").value = gt;
+
+                        gt = document.getElementById('mand' + id).textContent.trim();
+                        document.getElementById("lblMaND").innerHTML = gt;
+
+                        gt = document.getElementById('trangthai' + id).textContent.trim();
+                        if (gt == 'Đã xử lý') {
+                            document.getElementById("tt3").checked = true;
+                        } else if (gt == 'Đang xử lý') {
+                            document.getElementById("tt2").checked = true;
+                        } else {
+                            document.getElementById("tt1").checked = true;
+                        }
+                    }
+                </script>
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded " href="#page-top ">
+                    <i class="fas fa-angle-up "></i>
+                </a>
+
+                <!-- Logout Modal-->
+                <div class="modal fade " id="logoutModal " tabindex="-1 " role="dialog " aria-labelledby="exampleModalLabel " aria-hidden="true ">
+                    <div class="modal-dialog " role="document ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h5 class="modal-title " id="exampleModalLabel ">Ready to Leave?</h5>
+                                <button class="close " type="button " data-dismiss="modal " aria-label="Close ">
+          <span aria-hidden="true ">×</span>
+        </button>
+                            </div>
+                            <div class="modal-body ">Select "Logout " below if you are ready to end your current session.</div>
+                            <div class="modal-footer ">
+                                <button class="btn btn-secondary " type="button " data-dismiss="modal ">Cancel</button>
+                                <a class="btn btn-primary " href=" ">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade " id="dialogEdit " role="dialog " aria-hidden="true ">
+
+                    <div class="modal-dialog modal-dialog-centered ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h5 id="tt " style="margin-top: 10px; ">Sửa tài khoản</h5>
+                                <button type="button " class="close " data-dismiss="modal " aria-label="Close ">
+                                            <span aria-hidden="true ">&times;</span>
+                                        </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+</body>
+
+</html>

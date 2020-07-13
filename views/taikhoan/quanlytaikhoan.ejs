@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Quản lý tài khoản - CN Scanner</title>
+    <LINK REL="SHORTCUT ICON" HREF="assets/img/logo.png">
+
+    <script defer src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+    <script defer src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
+    <script defer src="./init-firebase.js"></script>
+
+
+    <% include ../partials/head %>
+</head>
+
+<body id="page-top">
+
+    <% include ../partials/firebase %>
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <% include ../partials/sidebar %>
+
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <% include ../partials/topbar %>
+
+                            <!-- Begin Page Content -->
+                            <div class="container-fluid">
+
+                                <!-- Page Heading -->
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 id="title" class="h3 mb-0 text-gray-800">Quản lý tài khoản</h1>
+                                    <button style="color: ivory;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-target="#dialogAdd" data-toggle="modal"><i class="fas fa-user-plus" ></i></i> Thêm mới</button>
+                                </div>
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr style="color: #4166D5; font-size: 18px; background: white;">
+                                            <th style="width: 3px;"></th>
+                                            <th>Tên đăng nhập</th>
+                                            <th>Tên người dùng</th>
+                                            <th>Giới tính</th>
+                                            <th>ID</th>
+                                            <th>Loại tài khoản</th>
+                                            <th>Kích hoạt</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <% userList.forEach(function(user) { %>
+                                            <tr>
+                                                <td style=" width: 3px; font-size: 20px; background: white; ">
+
+                                                    <button id="user<%= user.get('TenDN')%>" type="button" class="btn btn-primary" data-target="#dialogEdit" data-toggle="modal" onClick="edit(this.id)">
+                                                            <a style="color: white;" data-target="#dialogEdit" ><i class="fas fa-user-edit "></i></a>
+                                                        </button>
+                                                </td>
+                                                <td>
+                                                    <a id="tendn<%= user.get('TenDN') %>">
+                                                        <%= user.get('TenDN') %>
+                                                    </a>
+                                                    <a id="matkhau<%= user.get('TenDN') %>" hidden="true">
+                                                        <%= user.get('MatKhau') %>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a id="ten<%= user.get('TenDN') %>">
+                                                        <%= user.get('Ten') %>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a id="gioitinh<%= user.get('TenDN') %>">
+                                                        <% if(user.get('GioiTinh') == true){ %>
+                                                            Nam
+                                                            <% }else{%>
+                                                                Nữ
+                                                                <% } %>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a id="id<%= user.get('TenDN') %>">
+                                                        <%= user.get('Id') %>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a id="loai<%= user.get('TenDN') %>">
+                                                        <% if(user.get('Loai') == 1){ %>
+                                                            Sinh viên
+                                                            <% }else{%>
+                                                                Giảng viên
+                                                                <% } %>
+                                                    </a>
+
+                                                </td>
+                                                <td>
+                                                    <% if(user.get('KichHoat')){ %>
+                                                        <a id="cokichhoat<%= user.get('TenDN') %>">
+                                                            <i class="fas fa-toggle-on " style="font-size: 25px; color: #4166D5; "></i>
+                                                        </a>
+
+                                                        <% }else{%>
+                                                            <a id="huykichhoat<%= user.get('TenDN') %>">
+                                                                <i class="fas fa-toggle-off " style="font-size: 25px; color: red; "></i>
+                                                            </a>
+                                                            <% } %>
+
+                                                                <a id="kichhoat<%= user.get('TenDN') %>" hidden="true">
+                                                                    <%= user.get('KichHoat') %>
+                                                                </a>
+
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+
+                                    </tbody>
+
+
+                                </table>
+
+                            </div>
+                            <!-- End of Main Content -->
+
+
+
+                    </div>
+                    <!-- End of Content Wrapper -->
+
+                </div>
+                <!-- End of Page Wrapper -->
+
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded " href="#page-top ">
+                    <i class="fas fa-angle-up "></i>
+                </a>
+
+                <!-- Logout Modal-->
+                <div class="modal fade " id="logoutModal " tabindex="-1 " role="dialog " aria-labelledby="exampleModalLabel " aria-hidden="true ">
+                    <div class="modal-dialog " role="document ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h5 class="modal-title " id="exampleModalLabel ">Ready to Leave?</h5>
+                                <button class="close " type="button " data-dismiss="modal " aria-label="Close ">
+          <span aria-hidden="true ">×</span>
+        </button>
+                            </div>
+                            <div class="modal-body ">Select "Logout " below if you are ready to end your current session.</div>
+                            <div class="modal-footer ">
+                                <button class="btn btn-secondary " type="button " data-dismiss="modal ">Cancel</button>
+                                <a class="btn btn-primary " href="">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="dialogEdit" role="dialog" aria-hidden="true">
+
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 id="tt" style="margin-top: 10px;">Sửa tài khoản</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="POST" action="taikhoan/suataikhoan">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="edtTenDN">Tên đăng nhập:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="edtTenDN" name="TenDN" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="edtMatKhau">Mật khẩu:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="edtMatKhau" name="MatKhau">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="edtTen">Tên người dùng:</label>
+                                        <div class="col-sm-10">
+                                            <input type="name" class="form-control" id="edtTen" name="Ten">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" aria-orientation="vertical">
+                                        <label class="control-label col-sm-2" for="description">Giới tính:</label>
+                                        <div class="col-sm-10">
+                                            <label><input id="radNam" type="radio" name="GioiTinh" value=true> Nam </label>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <label><input id="radNu" type="radio" name="GioiTinh" value=false> Nữ</label><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="title">ID:</label>
+                                        <div class="col-sm-10">
+                                            <input type="name" class="form-control" id="edtId" name="Id">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="title">Loại tài khoản:</label>
+                                        <div class="col-sm-10">
+                                            <label><input id="loai1" type="radio" name="Loai" value="1"> Sinh viên </label>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <label><input id="loai2" type="radio" name="Loai" value="2"> Giảng viên</label><br>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="title">Kích hoạt:</label>
+                                        <div class="col-sm-10">
+                                            <label><input id="kichhoat" type="checkbox" name="KichHoat"> Kích hoạt</label><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <input type="submit" style="background: blue;" type="button" class="btn btn-warning">
+                                        <button id="btnCancel" type="button" class="btn btn-warning" style="background: red;" data-dismiss="modal">
+                                  <span class='glyphicon glyphicon-remove'></span> Hủy
+                                </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="modal fade" id="dialogAdd" role="dialog" aria-hidden="true">
+
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 id="tt2" style="margin-top: 10px;">Thêm tài khoản</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="POST" action="taikhoan/themtaikhoan">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="edtTenDN">Tên đăng nhập:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="addTenDN" name="TenDN" placeholder="Nhập tên đăng nhập..." required onfocusout="test()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="addMatKhau">Mật khẩu:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="addMatKhau" name="MatKhau" placeholder="Nhập mật khẩu..." required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="addTen">Tên người dùng:</label>
+                                        <div class="col-sm-10">
+                                            <input type="name" class="form-control" id="addTen" name="Ten" placeholder="Nhập tên người dùng..." required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" aria-orientation="vertical">
+                                        <label class="control-label col-sm-2" for="description">Giới tính:</label>
+                                        <div class="col-sm-10">
+                                            <label><input id="addRadNam" type="radio" name="GioiTinh" value=true checked=true> Nam </label>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <label><input id="addRadNu" type="radio" name="GioiTinh" value=false> Nữ</label><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="addId">ID:</label>
+                                        <div class="col-sm-10">
+                                            <input type="name" class="form-control" id="addId" name="Id" placeholder="Nhập Mã Sinh viên / Giảng viên" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="title">Loại tài khoản:</label>
+                                        <div class="col-sm-10">
+                                            <label><input id="addLoai1" type="radio" name="Loai" value="1" checked=true> Sinh viên </label>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                            <label><input id="addLoai2" type="radio" name="Loai" value="2"> Giảng viên</label><br>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="title">Kích hoạt:</label>
+                                        <div class="col-sm-10">
+                                            <label><input id="addKichhoat" type="checkbox" checked=true name="KichHoat"> Kích hoạt</label><br>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" style="background: blue;" type="button" class="btn btn-warning">
+                                        <button id="addBtnCancel" type="button" class="btn btn-warning" style="background: red;" data-dismiss="modal">
+                                  <span class='glyphicon glyphicon-remove'></span> Hủy
+                                </button>
+                                    </div>
+                                </form>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded " href="#page-top ">
+                    <i class="fas fa-angle-up "></i>
+                </a>
+</body>
+
+<script>
+    function edit(code) {
+        let id = code.substring(4);
+        let gt;
+        gt = document.getElementById('tendn' + id).textContent.trim();
+        document.getElementById("edtTenDN").value = gt;
+
+        gt = document.getElementById('matkhau' + id).textContent.trim();
+        document.getElementById("edtMatKhau").value = gt;
+
+        gt = document.getElementById('ten' + id).textContent.trim();
+        document.getElementById("edtTen").value = gt;
+
+        gt = document.getElementById('gioitinh' + id).textContent.trim();
+        if (gt == 'Nam') {
+            document.getElementById("radNam").checked = true;
+        } else {
+            document.getElementById("radNu").checked = true;
+        }
+
+        gt = document.getElementById('id' + id).textContent.trim();
+        document.getElementById("edtId").value = gt;
+
+        gt = document.getElementById('loai' + id).textContent.trim();
+        if (gt == 'Sinh viên') {
+            document.getElementById("loai1").checked = true;
+        } else {
+            document.getElementById("loai2").checked = true;
+        }
+
+        //document.getElementById("kichhoat").checked = true;
+
+        gt = document.getElementById('kichhoat' + id).textContent.trim();
+
+        let s = gt.replace(/\n|\r/g, "");
+        s = s.trim();
+        console.log('ss: ', s);
+        if (s == 'true') {
+            document.getElementById("kichhoat").checked = true;
+        } else {
+            document.getElementById("kichhoat").checked = false;
+        }
+
+    }
+
+    async function test() {
+        //document.getElementById("addTenDN").value = 'hihi';
+        let id = document.getElementById('addTenDN').textContent.trim();
+        //alert("d");
+        let test = await db.getUser(id);
+
+        if (test == false) {
+            alert('Tên đăng nhập đã tồn tại');
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#btnSubmit').click(function() {
+
+            //window.location.href = 'taikhoan/suataikhoan/' + $('#edtTenDN').val();
+
+
+        });
+    });
+</script>
+
+</html>

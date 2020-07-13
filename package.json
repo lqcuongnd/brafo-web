@@ -1,0 +1,32 @@
+{
+    "name": "cnscanner",
+    "version": "1.0.0",
+    "description": "a really cool app",
+    "engines": {
+        "node": "10.16.3"
+    },
+    "main": "app",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "lqcuongnd & tthnhubt",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.19.2",
+        "body-parser": "^1.19.0",
+        "cookie-parse": "^0.4.0",
+        "cookie-parser": "^1.4.4",
+        "dotenv": "^8.2.0",
+        "ejs": "^2.7.1",
+        "ejs-promise": "^0.3.3",
+        "express": "^4.17.1",
+        "express-session": "^1.17.0",
+        "firebase-admin": "^8.7.0",
+        "jquery": "^3.4.1",
+        "node-persist": "0.0.8",
+        "querystring": "^0.2.0",
+        "request": "^2.88.2",
+        "url": "^0.11.0"
+    }
+}
