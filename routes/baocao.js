@@ -4,10 +4,10 @@ var express = require('express')
 var database = require('../my_modules/db')
 var userRouter = express.Router()
 var bodyParser = require('body-parser')
+let apis = require('../my_modules/apis')
 
 const { resolve } = require('path')
 require('dotenv').config({ path: resolve("../.env") })
-let rootUrl = '' + process.env.HOST + process.env.PORT
 
 userRouter.use(bodyParser.urlencoded({ extended: false }))
     //userRouter.use(bodyParser())
@@ -26,7 +26,8 @@ userRouter.get('/', async function(req, res, next) {
         res.redirect('/dangnhap')
     } else {
 
-        let test = await database.getOrg()
+        let test = await apis.orgInfo()
+        console.log(test.info)
 
         var a = new Date()
         console.log(a)
@@ -42,11 +43,13 @@ userRouter.get('/', async function(req, res, next) {
         list.sort((a, b) => (a.get('ThoiGian') < b.get('ThoiGian')) ? 1 : -1)
         let tt = ''
         console.log(list.length + ' báo cáo')
-        res.render('baocao/quanlybaocao', { reportList: list, title: tt, test: test })
+        res.render('baocao/quanlybaocao', { reportList: list, title: tt, t: test.info.website})
     }
 })
 
 userRouter.get('/:t', async function(req, res, next) {
+    let test = await apis.orgInfo()
+
     if (user == null) {
         link = '/baocao'
         res.redirect('/dangnhap')
@@ -68,7 +71,7 @@ userRouter.get('/:t', async function(req, res, next) {
         list.sort((a, b) => (a.get('ThoiGian') < b.get('ThoiGian')) ? 1 : -1)
 
         console.log(list.length + ' báo cáo')
-        res.render('baocao/quanlybaocao', { reportList: list, title: tt, })
+        res.render('baocao/quanlybaocao', { reportList: list, title: tt, t: test.info})
     }
 })
 
@@ -92,7 +95,7 @@ userRouter.post('/capnhatbaocao', async function(req, res, next) {
 
         await database.editReport(ma, data)
 
-        res.redirect('http://cnscanner.herokuapp.com/baocao')
+        res.redirect('/baocao')
     }
 })
 

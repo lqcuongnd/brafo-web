@@ -55,10 +55,10 @@
                                         Lọc
                                            </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao">Tất cả</a>
-                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao/daxuly">Đã Xử Lý</a>
-                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao/dangxuly">Đang Xử Lý</a>
-                                            <a class="dropdown-item" href="http://cnscanner.herokuapp.com/baocao/chuaxuly">Chưa Xử Lý</a>
+                                            <a class="dropdown-item" href="baocao">Tất cả</a>
+                                            <a class="dropdown-item" href="baocao/daxuly">Đã Xử Lý</a>
+                                            <a class="dropdown-item" href="baocao/dangxuly">Đang Xử Lý</a>
+                                            <a class="dropdown-item" href="baocao/chuaxuly">Chưa Xử Lý</a>
                                         </div>
                                     </div>
 
@@ -139,8 +139,6 @@
                                                                             <a id="trangthai<%= bc.get('Ma') %>" style="font-weight: bold;">
                                                                                 <%= bc.get('TrangThai') %>
                                                                             </a>
-                                                                            <p>
-                                                                                <%= test %></p>
                                                                         </td>
                                                                         <% }); %>
 
@@ -173,7 +171,7 @@
                             </div>
 
                             <div class="modal-body">
-                                <form method="POST" action="http://cnscanner.herokuapp.com/baocao/capnhatbaocao">
+                                <form method="POST" action="baocao/capnhatbaocao">
                                     <div class="form-group">
                                         <label style="margin-left: 15px;">Mã Báo cáo:</label>
                                         <label style="color: blue;" id='lblMa' class="control-label col-sm-5">Mã Báo cáo:</label>

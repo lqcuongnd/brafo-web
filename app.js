@@ -1,6 +1,10 @@
 var express = require('express')
 var app = express()
-var port = 4000;
+
+const { resolve } = require('path')
+require('dotenv').config({ path: resolve("../.env") })
+var port = 2902
+
 //var cookieParser = require('cookie-parser')
 const userRoute = require('./routes/taikhoan')
 const roomRoute = require('./routes/phong')
@@ -39,10 +43,6 @@ app.use(session({
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-const { resolve } = require('path')
-require('dotenv').config({ path: resolve("../.env") })
-let rootUrl = '' + process.env.HOST + process.env.PORT
-
 app.get('/', async function (req, res) {
     console.log("Home ")
 
@@ -60,14 +60,14 @@ app.get('/', async function (req, res) {
 
 app.get('/dangxuat', (req, res) => {
     user = null
-    res.redirect('localhost:' + port + '/dangnhap')
+    res.redirect('/dangnhap')
 })
 
 // app.listen(process.env.PORT || port, function() {
 //     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env)
 // })
 app.listen(port, function () {
-    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env)
+    console.log("Express server listening on port %d in %s mode", port, app.settings.env)
 })
 
 app.get('/test', (req, res) => {

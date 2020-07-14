@@ -113,20 +113,6 @@ async function editReport(id, data) {
     return await setDoc.set(data, { merge: true });
 };
 
-    const axios = require('axios');
-async function getOrg() {
-  try {
-    const response = await axios.get('http://112.109.93.135:2902/orgs')
-    // console.log(response.data.url);
-    let dt = response.data
-    // console.log(response.data[0]);
-    console.log(response.data[0].info);
-    return response.data[0]
-  } catch (error) {
-    console.log(error.response.body);
-  }
-}
-
 module.exports = {
     getUser: getUser,
     getAllUsers: getAllUsers,
@@ -135,6 +121,5 @@ module.exports = {
     countUsers: countUsers,
     getAmin: getAmin,
     getAllReports: getAllReports,
-    editReport: editReport,
-    getOrg: getOrg
+    editReport: editReport
 }

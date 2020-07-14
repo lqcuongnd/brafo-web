@@ -39,12 +39,12 @@ loginRouter.post('/', async function(req, res, next) {
     let check = await database.getAmin(username);
 
     if (check == false) {
-        res.redirect('http://cnscanner.herokuapp.com/dangnhap');
+        res.redirect('/dangnhap');
     } else if (pass == check.get('MatKhau')) {
         user = check;
         console.log('sesion ' + user + ' dang nhap thanh cong, chuyen sang home ...');
         if (link != '' && link != '/')
-            res.redirect('http://cnscanner.herokuapp.com/');
+            res.redirect('/');
         else
             res.redirect(link);
     } else {}
