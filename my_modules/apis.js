@@ -75,4 +75,36 @@ module.exports = {
         //axios(config).then(console.log)
     },
 
+    addUser: async function (jwt, json) {
+        const config = {
+            method: 'post',
+            url: baseUrl + 'auth/local/register',
+            // headers: {'Authorization': 'Bearer '+ jwt},
+            data: json,
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+    addRoom: async function (jwt, json) {
+        const config = {
+            method: 'post',
+            url: baseUrl + 'rooms',
+            headers: {'Authorization': 'Bearer '+ jwt},
+            data: json,
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
 }

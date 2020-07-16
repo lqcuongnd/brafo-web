@@ -6,6 +6,8 @@ var userRouter = express.Router()
 var bodyParser = require('body-parser')
 let apis = require('../my_modules/apis')
 
+let cookieParser = require('cookie-parser')
+
 const { resolve } = require('path')
 require('dotenv').config({ path: resolve("../.env") })
 
@@ -16,34 +18,26 @@ userRouter.use(function(req, res, next) {
     res.locals.userValue = null
     next()
 })
+userRouter.use(cookieParser())
 
 //MẶC ĐỊNH ROUTE ĐÃ LÀ /taikhoan RỒI
 
 
 userRouter.get('/', async function(req, res, next) {
-    if (user == null) {
-        link = '/baocao'
-        res.redirect('/dangnhap')
-    } else {
+    console.log("GET: BAO CAO")
 
-        let test = await apis.orgInfo()
-        console.log(test.info)
+    if(req.cookies.auth != undefined){
 
-        var a = new Date()
-        console.log(a)
+        let user = req.cookies.auth.user
 
-        console.log('GET baocao ... ')
-
-        let reports = await database.getAllReports()
-        let list = []
-        reports.forEach(doc => {
-            list.push(doc)
-        })
-
-        list.sort((a, b) => (a.get('ThoiGian') < b.get('ThoiGian')) ? 1 : -1)
-        let tt = ''
-        console.log(list.length + ' báo cáo')
-        res.render('baocao/quanlybaocao', { reportList: list, title: tt, t: test.info.website})
+        let jwt = req.cookies.auth.jwt
+        console.log(jwt)
+    
+        res.render('baocao/quanlybaocao', { user: user })
+    }
+    else{
+        console.log('chưa đăng nhập')
+        res.render('pages/login')
     }
 })
 

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Quản lý tài khoản - CN Scanner</title>
+    <title>Quản lý tài khoản - Brafo</title>
     <LINK REL="SHORTCUT ICON" HREF="assets/img/logo.png">
 
     <script type="module" src="../../my_modules/js.cookie.mjs"></script>
@@ -40,6 +40,8 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 id="title" class="h3 mb-0 text-gray-800">Quản lý tài khoản</h1>
+
+
                         <button style="color: ivory;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                             data-target="#dialogAdd" data-toggle="modal"><i class="fas fa-user-plus"></i></i> Thêm
                             mới</button>
@@ -47,6 +49,11 @@
 
                     <div id='tableUsers'></div>
 
+                    <ul class="pagination" id="navi" style="float: right;">
+
+                    </ul>
+                    
+                    <p id="phantrang" hidden="true">1</p>
 
                 </div>
                 <!-- End of Main Content -->
@@ -86,7 +93,7 @@
 
         <div class="modal fade" id="dialogEdit" role="dialog" aria-hidden="true">
 
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered" style="width: 7000pt;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 id="tt" style="margin-top: 10px;">Sửa tài khoản</h5>
@@ -124,17 +131,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">ID:</label>
+                                <label class="control-label col-sm-2" for="title">email:</label>
                                 <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="edtId" name="Id">
+                                    <input type="name" class="form-control" id="edtEmail" name="Email">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="title">Loại tài khoản:</label>
                                 <div class="col-sm-10">
-                                    <label><input id="loai1" type="radio" name="Loai" value="1"> Sinh viên
+                                    <label><input id="loai1" type="radio" name="Loai" value="1"> Student
                                     </label>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    <label><input id="loai2" type="radio" name="Loai" value="2"> Giảng viên</label><br>
+                                    <label><input id="loai2" type="radio" name="Loai" value="2"> Teacher</label><br>
+                                    <label><input id="loai3" type="radio" name="Loai" value="3"> Admin</label><br>
 
                                 </div>
                             </div>
@@ -205,10 +213,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="addId">ID:</label>
+                                <label class="control-label col-sm-2" for="addId">email:</label>
                                 <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="addId" name="Id"
-                                        placeholder="Nhập Mã Sinh viên / Giảng viên" required>
+                                    <input type="name" class="form-control" id="addEmail" name="Email"
+                                        placeholder="Nhập địa chỉ email" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -217,6 +225,8 @@
                                     <label><input id="addLoai1" type="radio" name="Loai" value="1" checked=true> Sinh
                                         viên </label>&nbsp&nbsp&nbsp&nbsp&nbsp
                                     <label><input id="addLoai2" type="radio" name="Loai" value="2"> Giảng
+                                        viên</label><br>&nbsp&nbsp&nbsp&nbsp&nbsp
+                                    <label><input id="addLoai2" type="radio" name="Loai" value="3"> Quản trị
                                         viên</label><br>
 
                                 </div>
@@ -252,77 +262,59 @@
         </a>
 </body>
 
-<script>
-    function edit(code) {
-        let id = code.substring(4);
-        let gt;
-        gt = document.getElementById('tendn' + id).textContent.trim();
-        document.getElementById("edtTenDN").value = gt;
-
-        gt = document.getElementById('matkhau' + id).textContent.trim();
-        document.getElementById("edtMatKhau").value = gt;
-
-        gt = document.getElementById('ten' + id).textContent.trim();
-        document.getElementById("edtTen").value = gt;
-
-        gt = document.getElementById('gioitinh' + id).textContent.trim();
-        if (gt == 'Nam') {
-            document.getElementById("radNam").checked = true;
-        } else {
-            document.getElementById("radNu").checked = true;
-        }
-
-        gt = document.getElementById('id' + id).textContent.trim();
-        document.getElementById("edtId").value = gt;
-
-        gt = document.getElementById('loai' + id).textContent.trim();
-        if (gt == 'Sinh viên') {
-            document.getElementById("loai1").checked = true;
-        } else {
-            document.getElementById("loai2").checked = true;
-        }
-
-        //document.getElementById("kichhoat").checked = true;
-
-        gt = document.getElementById('kichhoat' + id).textContent.trim();
-
-        let s = gt.replace(/\n|\r/g, "");
-        s = s.trim();
-        console.log('ss: ', s);
-        if (s == 'true') {
-            document.getElementById("kichhoat").checked = true;
-        } else {
-            document.getElementById("kichhoat").checked = false;
-        }
-
-    }
-
-    async function test() {
-        //document.getElementById("addTenDN").value = 'hihi';
-        let id = document.getElementById('addTenDN').textContent.trim();
-        //alert("d");
-        let test = await db.getUser(id);
-
-        if (test == false) {
-            alert('Tên đăng nhập đã tồn tại');
-        }
-    }
-</script>
+<script></script>
 
 <script type="text/javascript">
-
-
 
     $(document).ready(async function () {
 
         let users = await $.ajax({
             type: 'GET',
-            url: "http://112.109.93.135:1996/users",
+            url: "http://112.109.93.135:1996/users?_start=0&_limit=10",
             headers: {
                 "Authorization": 'Bearer ' + getCookie('jwt')
             },
         });
-        console.log(users)
+        let countU = await $.ajax({
+            type: 'GET',
+            url: "http://112.109.93.135:1996/users/count",
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            },
+        });
+        console.log(countU + ' user')
+
+        getUsers(1)
+
+        let nav = ''
+        nav += '<li class="page-item active"><button class="page-link" onClick="getUsers(1)">1</button></li>'
+        for (let i = 2; i < countU / 10 + 1; i++) {
+            nav += '<li class="page-item"><button class="page-link" onClick="getUsers(' + i + ')">' + i + '</button></li>'
+        }
+
+        if (countU > 2)
+            nav += '<li class="page-item"><a class="page-link" >>></a></li>'
+
+        $('#navi').html(nav)
+
+
+
+        $("#btnSearch").on('click', (async function () {
+        }))
+
+
+
+    })
+    async function getUsers(i) {
+        // $('#phantrang').text(i)
+        let start = i * 10 - 9;
+        let users = await $.ajax({
+            type: 'GET',
+            url: "http://112.109.93.135:1996/users?_start=" + start + "&_limit=10",
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            },
+        });
         let content = '<table class="table table-hover">'
             + '<thead>'
             + '<tr style="color: #4166D5; font-size: 18px; background: white;">'
@@ -340,17 +332,13 @@
             + '</thead> <tbody>'
 
         for (let user of users) {
-            console.log(user.username)
-        }
 
-        for (let user of users) {
-
-            console.log(user.username)
+            // console.log(user.username)
             content += '<tr><td style=" width: 3px; font-size: 20px; background: white; "><button id="' + user.username + '" type="button" class="btn btn-primary" data-target="#dialogEdit" data-toggle="modal" onClick="edit(this.id)">'
             content += '<a style="color: white;" data-target="#dialogEdit" ><i class="fas fa-user-edit "></i></a></button></td>'
 
-            content += '<td><a id="tendn' + user.username + '">' + user.username + '</a></td>'
-            // content += '<td><a id="ten' + user.username + '">' + user.fullname + '</a></td>'
+            content += '<td><a id="tendn' + user.username + '">' + user.username + '</a>'
+            content += '<a id="ten' + user.username + '" hidden="true">' + user.fullname + '</a></td>'
             content += '<td><a id="gioitinh' + user.username + '">'
             if (user.isMale) {
                 content += 'Nam'
@@ -359,107 +347,75 @@
             }
             content += '</a></td>'
             content += '<td><a id="email' + user.username + '">' + user.email + '</a></td>'
-            content += '<td><a id="sdt' + user.username + '">' + user.phoneNumber + '</a></td>'
-            content += '<td><a id="role' + user.username + '">' + user.role.name + '</a></td>'
-            content += '<td><a id="donvi' + user.username + '">' + user.department + '</a></td>'
-            console.log(user.confirmed)
+
+            if (user.phoneNumber != undefined)
+                content += '<td><a id="sdt' + user.username + '">' + user.phoneNumber + '</a></td>'
+            else
+                content += '<td><a id="sdt' + user.username + '"></a></td>'
+            content += '<td><a id="loai' + user.username + '">' + user.role.name + '</a></td>'
+
+            if (user.department != undefined)
+                content += '<td><a id="donvi' + user.username + '">' + user.department + '</a></td>'
+            else
+                content += '<td><a id="donvi' + user.username + '"></a></td>'
+
+            // console.log(user.confirmed)
             content += '<td><a id="cokichhoat' + user.username + '">'
             if (user.confirmed == true) {
-                console.log('ok')
                 content += '<i class="fas fa-toggle-on" style="font-size: 25px; color: #4166D5; "></i></a>'
-                console.log('ok2')
             } else {
-                console.log('ok3')
                 content += '<i class="fas fa-toggle-off" style="font-size: 25px; color: #4166D5; "></i></a>'
             }
-                console.log('ok3')
-            content += '<a id="kichhoat' + user.username + '" hidden="true">' + user.confirmed + '</a></td></tr>'
-
-            console.log('ok4')
-
+            content += '<a id="kichhoat"' + user.username + '" hidden="true">' + user.confirmed + '</a></td></tr>'
         }
 
         content += '</tbody></table>'
 
         $('#tableUsers').html(content)
-        document.getElementById('tableUsers').innerHTML = content;
-
-
-        $("#btnSearch").on('click', (async function () {
-            // get()
-            // console.log(getCookie('jwt'))
-
-
-        }))
-
-        function get() {
-            let jwt = getCookie('jwt')
-            let url = 'http://112.109.93.135:1996/orgs'
-            let h = new Headers()
-            h.append('Authorization', 'Bearer ' + jwt)
-            let req = new Request(url, {
-                method: 'GET',
-            })
-            fetch(req).then(resp => resp.json()).then(data => {
-                console.log(data[0])
-            }).catch(err => {
-                console.log(err.message)
-            })
-        }
-
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-
-
-    })
+    }
+</script>
 
 <script>
-    function edit(code) {
-        let id = code.substring(4);
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function edit(id) {
         let gt;
         gt = document.getElementById('tendn' + id).textContent.trim();
         document.getElementById("edtTenDN").value = gt;
-
-        gt = document.getElementById('matkhau' + id).textContent.trim();
-        document.getElementById("edtMatKhau").value = gt;
 
         gt = document.getElementById('ten' + id).textContent.trim();
         document.getElementById("edtTen").value = gt;
 
         gt = document.getElementById('gioitinh' + id).textContent.trim();
+        // console.log(gt)
         if (gt == 'Nam') {
             document.getElementById("radNam").checked = true;
         } else {
             document.getElementById("radNu").checked = true;
         }
 
-        gt = document.getElementById('id' + id).textContent.trim();
-        document.getElementById("edtId").value = gt;
+        gt = document.getElementById('email' + id).textContent.trim();
+        document.getElementById("edtEmail").value = gt;
+
 
         gt = document.getElementById('loai' + id).textContent.trim();
-        if (gt == 'Sinh viên') {
+        if (gt == 'student') {
             document.getElementById("loai1").checked = true;
-        } else {
+        } else if (gt == 'teacher') {
             document.getElementById("loai2").checked = true;
+        } else {
+            document.getElementById("loai3").checked = true;
         }
-
-        //document.getElementById("kichhoat").checked = true;
 
         gt = document.getElementById('kichhoat' + id).textContent.trim();
-
-        let s = gt.replace(/\n|\r/g, "");
-        s = s.trim();
-        console.log('ss: ', s);
-        if (s == 'true') {
-            document.getElementById("kichhoat").checked = true;
-        } else {
-            document.getElementById("kichhoat").checked = false;
-        }
-
+        console.log(gt)
+        // if (gt == 'true') {
+        //     document.getElementById("kichhoat").checked = true;
     }
 
     async function test() {
@@ -472,7 +428,6 @@
             alert('Tên đăng nhập đã tồn tại');
         }
     }
-</script>
 </script>
 
 </html>

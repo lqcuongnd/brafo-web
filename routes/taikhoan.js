@@ -36,10 +36,6 @@ userRouter.get('/', async function(req, res, next) {
 
         let jwt = req.cookies.auth.jwt
     
-        // let users = await apis.getUsers(jwt, 20, 1)
-        // console.log('get list user:')
-        // console.log(users)
-    
         res.render('taikhoan/quanlytaikhoan', { user: user })
     }
     else{
