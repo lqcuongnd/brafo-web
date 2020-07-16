@@ -4,8 +4,8 @@ var app = express()
 const { resolve } = require('path')
 require('dotenv').config({ path: resolve("../.env") })
 var port = 2902
-
-//var cookieParser = require('cookie-parser')
+var store = require('store')
+let user
 const userRoute = require('./routes/taikhoan')
 const roomRoute = require('./routes/phong')
 const csvcRoute = require('./routes/csvc')
@@ -15,6 +15,7 @@ const baocaoRoute = require('./routes/baocao')
 const dangnhapRoute = require('./routes/dangnhap')
 var database = require('./my_modules/db')
 var session = require('express-session')
+let cookieParser = require('cookie-parser'); 
 global.user = null
 global.link = null
 
@@ -35,26 +36,22 @@ app.use('/loi', loiRoute)
 app.use('/trangthai', trangthaiRoute)
 app.use('/baocao', baocaoRoute)
 app.use('/dangnhap', dangnhapRoute)
-app.use(session({
-    secret: 'This is a secret',
-    resave: false,
-    saveUninitialized: true
-}))
+
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(cookieParser())
 
-app.get('/', async function (req, res) {
-    console.log("Home ")
-
-    if (user != null) {
-        console.log('DA DANG NHAP ' + user.get('Ten'))
-        res.render('pages/index', { u: user, db: database })
-    } else {
-        console.log('CHUA DANG NHAP ' + user)
-        link = '/'
+app.get('/', async (req, res) => {
+    console.log("GET: HOME")
+    
+    if(req.cookies.auth != undefined){
+        let user = req.cookies.auth.user
+        res.render('pages/index', { user: user })
+    }
+    else{
+        console.log('Chưa đăng nhập, chuyển hướng trang đăng nhập')
         res.redirect('/dangnhap')
     }
-
 
 })
 

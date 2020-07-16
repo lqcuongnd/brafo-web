@@ -21,3 +21,24 @@ const axios = require('axios');
     console.log(error.response.body);
   }
 })();
+
+
+
+
+
+// const config = {
+//   headers: { Authorization: `Bearer token` }
+// };
+
+// const bodyParameters = {
+//   "identifier": "1424801030013",
+//   "password": "cuong@123"
+// };
+
+// axios.post(
+//   'http://112.109.93.135:1996/auth/local',
+//   bodyParameters,
+//   config
+// ).then(console.log).catch(console.log);
+
+

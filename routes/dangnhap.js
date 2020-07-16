@@ -1,54 +1,77 @@
 // route for user here
 
-var express = require('express');
-var database = require('../my_modules/db');
-var loginRouter = express.Router();
-var bodyParser = require('body-parser');
-//var cookieParser = require('cookie-parser');
-var session = require('express-session');
+var express = require('express')
+var database = require('../my_modules/db')
+let apis = require('../my_modules/apis')
+var loginRouter = express.Router()
+var bodyParser = require('body-parser')
+var session = require('express-session')
+let cookieParser = require('cookie-parser'); 
+
+let link
 
 const { resolve } = require('path')
 require('dotenv').config({ path: resolve("../.env") })
-let rootUrl = '' + process.env.HOST + process.env.PORT
+
+var store = require('store')
 
 loginRouter.use(bodyParser.urlencoded({ extended: false }))
-    //loginRouter.use(express.cookieParser());
-loginRouter.use(session({
-    secret: 'This is a secret',
-    resave: false,
-    saveUninitialized: true
-}));
+//loginRouter.use(express.cookieParser())
+// loginRouter.use(session({
+//     secret: 'This is a secret',
+//     resave: false,
+//     saveUninitialized: true
+// }))
+loginRouter.use(cookieParser())
 
-loginRouter.use(function(req, res, next) {
-    res.locals.userValue = null;
-    next();
+loginRouter.use(function (req, res, next) {
+    res.locals.userValue = null
+    next()
 })
 
-//MẶC ĐỊNH ROUTE ĐÃ LÀ /taikhoan RỒI
+loginRouter.get('/', async (req, res) => {
+    console.log('GET DANG NHAP')
 
-loginRouter.get('/', (req, res) => {
-    console.log("GET DangNhap");
-    res.render('pages/login');
+    if(req.cookies.auth != undefined){
+        console.log('jwt nè: ' + req.cookies.jwt)
+        res.redirect('/')
+    }
+    else{
+        console.log('chưa đăng nhập')
+        res.render('pages/login')
+    }
 })
 
-loginRouter.post('/', async function(req, res, next) {
-    console.log("POST DangNhap");
-    let username = req.body.username;
-    let pass = req.body.pass;
+loginRouter.post('/', async function (req, res, next) {
+    console.log("POST: DANG NHAP")
+    let username = req.body.username
+    let pass = req.body.pass
 
-    let check = await database.getAmin(username);
+    let auth = await apis.auth(username, pass)
 
-    if (check == false) {
-        res.redirect('/dangnhap');
-    } else if (pass == check.get('MatKhau')) {
-        user = check;
-        console.log('sesion ' + user + ' dang nhap thanh cong, chuyen sang home ...');
-        if (link != '' && link != '/')
-            res.redirect('/');
-        else
-            res.redirect(link);
-    } else {}
+    console.log(auth)
+    if (typeof(auth) != undefined) {
+        if (auth.hasOwnProperty('jwt')) {
+            res.cookie('auth', auth)
+            res.cookie('jwt', auth.jwt)
+
+            // let role = res.cookie('auth', auth).user.role.type;
+            // if (role != 'admin') {
+            //     res.redirect('/dangnhap')
+            // }
+
+            console.log(auth.user.username)
+            console.log('sesion ' + user + ' dang nhap thanh cong, chuyen sang home ...')
+            if (link != '' && link != '/')
+                res.redirect('/')
+            else
+                res.redirect(link)
+        }
+    }
+    else {
+        res.redirect('/dangnhap')
+    }
 
 })
 
-module.exports = loginRouter;
+module.exports = loginRouter

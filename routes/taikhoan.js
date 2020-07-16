@@ -4,10 +4,16 @@ var express = require('express');
 var database = require('../my_modules/db');
 var userRouter = express.Router();
 var bodyParser = require('body-parser');
+let apis = require('../my_modules/apis')
+
+let cookieParser = require('cookie-parser')
 
 const { resolve } = require('path')
 require('dotenv').config({ path: resolve("../.env") })
 let rootUrl = '' + process.env.HOST + process.env.PORT
+
+var store = require('store')
+let user
 
 userRouter.use(bodyParser.urlencoded({ extended: false }))
     //userRouter.use(bodyParser());
@@ -16,32 +22,31 @@ userRouter.use(function(req, res, next) {
     res.locals.userValue = null;
     next();
 })
+userRouter.use(cookieParser())
 
 //MẶC ĐỊNH ROUTE ĐÃ LÀ /taikhoan RỒI
 
 userRouter.get('/', async function(req, res, next) {
-    if (user == null) {
-        link = '/taikhoan';
-        res.redirect('/dangnhap');
-    } else {
-        console.log('Enter taikhoan ... ');
 
-        let users = await database.getAllUsers();
-        let list = [];
-        users.forEach(doc => {
-            list.push(doc);
-        });
+    console.log("GET: TAI KHOAN")
 
-        // function editUser() {
-        //     console.log('sua user')
-        // };
+    if(req.cookies.auth != undefined){
 
-        //let num = await database.countUsers();
-        console.log(list.length);
+        let user = req.cookies.auth.user
 
-        res.render('taikhoan/quanlytaikhoan', { userList: list });
+        let jwt = req.cookies.auth.jwt
+    
+        // let users = await apis.getUsers(jwt, 20, 1)
+        // console.log('get list user:')
+        // console.log(users)
+    
+        res.render('taikhoan/quanlytaikhoan', { user: user })
     }
-});
+    else{
+        console.log('chưa đăng nhập')
+        res.render('pages/login')
+    }
+})
 
 userRouter.post('/suataikhoan', async function(req, res, next) {
     if (user == null) {
