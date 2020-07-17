@@ -31,7 +31,7 @@ userRouter.get('/', async function(req, res, next) {
         let user = req.cookies.auth.user
 
         let jwt = req.cookies.auth.jwt
-        console.log(jwt)
+        // console.log(jwt)
     
         res.render('baocao/quanlybaocao', { user: user })
     }

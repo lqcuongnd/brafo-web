@@ -47,16 +47,30 @@
                             mới</button>
                     </div>
 
-                    <div id='tableUsers'></div>
 
+
+
+
+
+
+
+
+                    <table id="tableUsers" class="table table-hover"></table>
                     <ul class="pagination" id="navi" style="float: right;">
 
                     </ul>
-                    
+
                     <p id="phantrang" hidden="true">1</p>
 
                 </div>
                 <!-- End of Main Content -->
+
+
+
+
+
+
+
 
 
 
@@ -268,46 +282,49 @@
 
     $(document).ready(async function () {
 
-        let users = await $.ajax({
-            type: 'GET',
-            url: "http://112.109.93.135:1996/users?_start=0&_limit=10",
-            headers: {
-                "Authorization": 'Bearer ' + getCookie('jwt')
-            },
-        });
-        let countU = await $.ajax({
-            type: 'GET',
-            url: "http://112.109.93.135:1996/users/count",
-            headers: {
-                "Authorization": 'Bearer ' + getCookie('jwt')
-            },
-        });
+        let countU = await countUser()
         console.log(countU + ' user')
 
         getUsers(1)
 
-        let nav = ''
-        nav += '<li class="page-item active"><button class="page-link" onClick="getUsers(1)">1</button></li>'
+        let nav = '<li id ="lili-1" class="page-item"><button class="page-link" onClick="getUsers(-1)"><<</button></li>'
+        nav += '<li id ="lili1" class="page-item"><button class="page-link" onClick="getUsers(1)">1</button></li>'
         for (let i = 2; i < countU / 10 + 1; i++) {
-            nav += '<li class="page-item"><button class="page-link" onClick="getUsers(' + i + ')">' + i + '</button></li>'
+            nav += '<li id ="lili' + i + '" class="page-item"><button class="page-link" onClick="getUsers(' + i + ')">' + i + '</button></li>'
         }
 
         if (countU > 2)
-            nav += '<li class="page-item"><a class="page-link" >>></a></li>'
+            nav += '<li id ="lili0" class="page-item"><button class="page-link" onClick="getUsers(0)">>></button></li>'
 
         $('#navi').html(nav)
-
-
 
         $("#btnSearch").on('click', (async function () {
         }))
 
-
-
     })
     async function getUsers(i) {
-        // $('#phantrang').text(i)
+
+        let sum = await countUser()
+
+        let pre = parseInt($('#phantrang').text())
+        let next = i == -1 ? pre - 1 : i == 0 ? pre + 1 : i
+
+        if (next > sum / 10 + 1 || next < 1) {
+            return
+        }
+        else {
+            $('#phantrang').text(next)
+        }
+
+        console.log('sum: ' + sum)
+        console.log('pre: ' + pre)
+        console.log('next: ' + next)
+
+
+        i = next
         let start = i * 10 - 9;
+        if (start > sum) return
+        console.log('start ' + start)
         let users = await $.ajax({
             type: 'GET',
             url: "http://112.109.93.135:1996/users?_start=" + start + "&_limit=10",
@@ -315,7 +332,7 @@
                 "Authorization": 'Bearer ' + getCookie('jwt')
             },
         });
-        let content = '<table class="table table-hover">'
+        let content = ''
             + '<thead>'
             + '<tr style="color: #4166D5; font-size: 18px; background: white;">'
             + '<th style="width: 3px;"></th>'
@@ -364,12 +381,12 @@
             if (user.confirmed == true) {
                 content += '<i class="fas fa-toggle-on" style="font-size: 25px; color: #4166D5; "></i></a>'
             } else {
-                content += '<i class="fas fa-toggle-off" style="font-size: 25px; color: #4166D5; "></i></a>'
+                content += '<i class="fas fa-toggle-off" style="font-size: 25px; color: #e74a3b; "></i></a>'
             }
             content += '<a id="kichhoat"' + user.username + '" hidden="true">' + user.confirmed + '</a></td></tr>'
         }
 
-        content += '</tbody></table>'
+        content += '</tbody>'
 
         $('#tableUsers').html(content)
     }
@@ -382,6 +399,24 @@
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+    async function countUser() {
+        let countU = await $.ajax({
+            type: 'GET',
+            url: "http://112.109.93.135:1996/users/count",
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            },
+        });
+
+        // let temp = countU/10
+        // temp = temp.toString()
+        // let sum = temp.split('.')
+        // sum = sum[0]
+        // sum = parseInt(sum) + 1
+        // console.log('tong: ' + sum)
+        return parseInt(countU)
+    }
+
 
     function edit(id) {
         let gt;

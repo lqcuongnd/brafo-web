@@ -41,6 +41,13 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(cookieParser())
 
+
+
+var server = require("http").Server(app);
+var io = require("socket.io")(server);
+
+
+
 app.get('/', async (req, res) => {
     console.log("GET: HOME")
     
@@ -55,8 +62,25 @@ app.get('/', async (req, res) => {
 
 })
 
+app.get('/chat', async (req, res) => {
+    console.log("GET: CHAT")
+    
+    if(req.cookies.auth != undefined){
+        let user = req.cookies.auth.user
+        res.render('pages/chat', { user: user })
+    }
+    else{
+        console.log('Chưa đăng nhập, chuyển hướng trang đăng nhập')
+        res.redirect('/dangnhap')
+    }
+
+})
+
 app.get('/dangxuat', (req, res) => {
     user = null
+    res.clearCookie('jwt');    
+    res.clearCookie('auth');    
+    // req.cookies.set('auth', {expires: Date.now()});
     res.redirect('/dangnhap')
 })
 
@@ -68,7 +92,6 @@ app.listen(port, function () {
 })
 
 app.get('/test', (req, res) => {
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl
-    let t = fullUrl
-    console.log(t)
+    res.render('pages/test')
 })
+

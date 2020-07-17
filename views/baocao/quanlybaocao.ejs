@@ -41,20 +41,14 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 id="title" class="h3 mb-0 text-gray-800">Quản lý báo cáo</h1>
 
-
-                        <button style="color: ivory;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                            data-target="#dialogAdd" data-toggle="modal"><i class="fas fa-user-plus"></i></i> Thêm
-                            mới</button>
                     </div>
+                    <!-- <div id="table" hidden="false"> -->
+                    <div id='tablereports'></div>
 
-                    <div id='tableUsers'></div>
-
-                    <ul class="pagination" id="navi" style="float: right;">
-
-                    </ul>
-                    
                     <p id="phantrang" hidden="true">1</p>
-
+                    <ul class="pagination" id="navi" style="float: right;">
+                        <!-- </div> -->
+                    </ul>
                 </div>
                 <!-- End of Main Content -->
 
@@ -72,7 +66,7 @@
         </a>
 
         <!-- Logout Modal-->
-        <div class="modal fade " id="logoutModal " tabindex="-1 " role="dialog " aria-labelledby="exampleModalLabel "
+        <div class="modal fade" id="logoutModal" tabindex="-1 " role="dialog" aria-labelledby="exampleModalLabel "
             aria-hidden="true ">
             <div class="modal-dialog " role="document ">
                 <div class="modal-content ">
@@ -93,69 +87,69 @@
 
         <div class="modal fade" id="dialogEdit" role="dialog" aria-hidden="true">
 
-            <div class="modal-dialog modal-dialog-centered" style="width: 7000pt;">
+            <div class="modal-dialog modal-xl" style="width:1250px;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 id="tt" style="margin-top: 10px;">Sửa tài khoản</h5>
+                        <h5 id="tt" style="margin-top: 10px;">Cập nhật báo cáo</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
                     <div class="modal-body">
-                        <form method="POST" action="taikhoan/suataikhoan">
+                        <form>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="edtTenDN">Tên đăng nhập:</label>
+                                <label class="control-label col-sm-2" for="edtTitle">Nội dung:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="edtTenDN" name="TenDN" readonly>
+                                    <input type="text" class="form-control" id="edtTitle" name="title" readonly>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="edtMatKhau">Mật khẩu:</label>
+                                <label class="control-label col-sm-2" for="edtDetail">Chi tiết:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="edtMatKhau" name="MatKhau">
+                                    <textarea id="edtDetail" class="form-control" name="detail" rows="2" cols="30"
+                                        readonly></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="edtTen">Tên người dùng:</label>
-                                <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="edtTen" name="Ten">
-                                </div>
+                                <label class="control-label col-2">Loại báo cáo: </label>
+                                <a id="type" class="control-label col-1.25">Loại </a>
                             </div>
                             <div class="form-group" aria-orientation="vertical">
-                                <label class="control-label col-sm-2" for="description">Giới tính:</label>
-                                <div class="col-sm-10">
-                                    <label><input id="radNam" type="radio" name="GioiTinh" value=true> Nam
-                                    </label>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    <label><input id="radNu" type="radio" name="GioiTinh" value=false> Nữ</label><br>
-                                </div>
+                                <label class="control-label col-2" for="edtRoom">Phòng: </label>
+                                <a id="room" class="control-label col-1.25">Phòng </a>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">email:</label>
-                                <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="edtEmail" name="Email">
-                                </div>
+                                <label class="control-label col-2">Người tạo:</label>
+                                <a id="user" class="control-label col-1.25">người </a>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">Loại tài khoản:</label>
-                                <div class="col-sm-10">
-                                    <label><input id="loai1" type="radio" name="Loai" value="1"> Student
-                                    </label>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    <label><input id="loai2" type="radio" name="Loai" value="2"> Teacher</label><br>
-                                    <label><input id="loai3" type="radio" name="Loai" value="3"> Admin</label><br>
 
+                            <div id="status" class="form-group">
+                                <label class="control-label col-2" for="title">Trạng thái:</label>
+                                <label class="col-1.25"><input id="loai1" type="radio" name="report_status"
+                                        value="5f10284f0692bf680e045567"> Đã tiếp nhận</label> &emsp;&emsp;
+                                <label class="col-1.25"><input id="loai2" type="radio" name="report_status"
+                                        value="5f1028590692bf680e045568"> Đang xử lý</label>&emsp;&emsp;
+                                <label class="col-1.25"><input id="loai3" type="radio" name="report_status"
+                                        value="5f10285d0692bf680e045569"> Đã xử lý</label>&emsp;&emsp;
+                                <div class="col-sm-10">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">Kích hoạt:</label>
+                                <label class="control-label col-sm-2" for="title">Ghi chú:</label>
                                 <div class="col-sm-10">
-                                    <label><input id="kichhoat" type="checkbox" name="KichHoat"> Kích hoạt</label><br>
+                                    <textarea id="edtNotes" class="form-control" name="notes" rows="2"
+                                        cols="30"></textarea>
                                 </div>
                             </div>
 
                             <div class="modal-footer">
-                                <input type="submit" style="background: blue;" type="button" class="btn btn-warning">
+                                <!-- <input style="background: blue;" type="button" class="btn btn-warning">hihi</input> -->
+                                <button id="btnSubmit" type="button" class="btn btn-primary" style="background: blue;"
+                                    data-dismiss="modal" onclick="putR()">
+                                    <span class='glyphicon glyphicon-remove'></span> Cập nhật
+                                </button>
                                 <button id="btnCancel" type="button" class="btn btn-warning" style="background: red;"
                                     data-dismiss="modal">
                                     <span class='glyphicon glyphicon-remove'></span> Hủy
@@ -170,212 +164,22 @@
         </div>
 
 
-        <div class="modal fade" id="dialogAdd" role="dialog" aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 id="tt2" style="margin-top: 10px;">Thêm tài khoản</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form method="POST" action="taikhoan/themtaikhoan">
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="edtTenDN">Tên đăng nhập:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="addTenDN" name="TenDN"
-                                        placeholder="Nhập tên đăng nhập..." required onfocusout="test()">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="addMatKhau">Mật khẩu:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="addMatKhau" name="MatKhau"
-                                        placeholder="Nhập mật khẩu..." required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="addTen">Tên người dùng:</label>
-                                <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="addTen" name="Ten"
-                                        placeholder="Nhập tên người dùng..." required>
-                                </div>
-                            </div>
-                            <div class="form-group" aria-orientation="vertical">
-                                <label class="control-label col-sm-2" for="description">Giới tính:</label>
-                                <div class="col-sm-10">
-                                    <label><input id="addRadNam" type="radio" name="GioiTinh" value=true checked=true>
-                                        Nam </label>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    <label><input id="addRadNu" type="radio" name="GioiTinh" value=false> Nữ</label><br>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="addId">email:</label>
-                                <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="addEmail" name="Email"
-                                        placeholder="Nhập địa chỉ email" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">Loại tài khoản:</label>
-                                <div class="col-sm-10">
-                                    <label><input id="addLoai1" type="radio" name="Loai" value="1" checked=true> Sinh
-                                        viên </label>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    <label><input id="addLoai2" type="radio" name="Loai" value="2"> Giảng
-                                        viên</label><br>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    <label><input id="addLoai2" type="radio" name="Loai" value="3"> Quản trị
-                                        viên</label><br>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">Kích hoạt:</label>
-                                <div class="col-sm-10">
-                                    <label><input id="addKichhoat" type="checkbox" checked=true name="KichHoat"> Kích
-                                        hoạt</label><br>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="submit" style="background: blue;" type="button" class="btn btn-warning">
-                                <button id="addBtnCancel" type="button" class="btn btn-warning" style="background: red;"
-                                    data-dismiss="modal">
-                                    <span class='glyphicon glyphicon-remove'></span> Hủy
-                                </button>
-                            </div>
-                        </form>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
 
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded " href="#page-top ">
             <i class="fas fa-angle-up "></i>
         </a>
+        
+<!-- <% include ../partials/chatbox %> -->
 </body>
 
 <script></script>
 
 <script type="text/javascript">
 
-    $(document).ready(async function () {
-
-        let users = await $.ajax({
-            type: 'GET',
-            url: "http://112.109.93.135:1996/users?_start=0&_limit=10",
-            headers: {
-                "Authorization": 'Bearer ' + getCookie('jwt')
-            },
-        });
-        let countU = await $.ajax({
-            type: 'GET',
-            url: "http://112.109.93.135:1996/users/count",
-            headers: {
-                "Authorization": 'Bearer ' + getCookie('jwt')
-            },
-        });
-        console.log(countU + ' user')
-
-        getUsers(1)
-
-        let nav = ''
-        nav += '<li class="page-item active"><button class="page-link" onClick="getUsers(1)">1</button></li>'
-        for (let i = 2; i < countU / 10 + 1; i++) {
-            nav += '<li class="page-item"><button class="page-link" onClick="getUsers(' + i + ')">' + i + '</button></li>'
-        }
-
-        if (countU > 2)
-            nav += '<li class="page-item"><a class="page-link" >>></a></li>'
-
-        $('#navi').html(nav)
-
-
-
-        $("#btnSearch").on('click', (async function () {
-        }))
-
-
-
-    })
-    async function getUsers(i) {
-        // $('#phantrang').text(i)
-        let start = i * 10 - 9;
-        let users = await $.ajax({
-            type: 'GET',
-            url: "http://112.109.93.135:1996/users?_start=" + start + "&_limit=10",
-            headers: {
-                "Authorization": 'Bearer ' + getCookie('jwt')
-            },
-        });
-        let content = '<table class="table table-hover">'
-            + '<thead>'
-            + '<tr style="color: #4166D5; font-size: 18px; background: white;">'
-            + '<th style="width: 3px;"></th>'
-            + '<th>Mã người dùng</th>'
-            // + '<th>Tên người dùng</th>'
-            + '<th>Giới tính</th>'
-            + '<th>email</th>'
-            + '<th>Số điện thoại</th>'
-            + '<th>Loại tài khoản</th>'
-            + '<th>Đơn vị</th>'
-            + '<th>Kích hoạt</th>'
-            + '</tr>'
-
-            + '</thead> <tbody>'
-
-        for (let user of users) {
-
-            // console.log(user.username)
-            content += '<tr><td style=" width: 3px; font-size: 20px; background: white; "><button id="' + user.username + '" type="button" class="btn btn-primary" data-target="#dialogEdit" data-toggle="modal" onClick="edit(this.id)">'
-            content += '<a style="color: white;" data-target="#dialogEdit" ><i class="fas fa-user-edit "></i></a></button></td>'
-
-            content += '<td><a id="tendn' + user.username + '">' + user.username + '</a>'
-            content += '<a id="ten' + user.username + '" hidden="true">' + user.fullname + '</a></td>'
-            content += '<td><a id="gioitinh' + user.username + '">'
-            if (user.isMale) {
-                content += 'Nam'
-            } else {
-                content += 'Nữ'
-            }
-            content += '</a></td>'
-            content += '<td><a id="email' + user.username + '">' + user.email + '</a></td>'
-
-            if (user.phoneNumber != undefined)
-                content += '<td><a id="sdt' + user.username + '">' + user.phoneNumber + '</a></td>'
-            else
-                content += '<td><a id="sdt' + user.username + '"></a></td>'
-            content += '<td><a id="loai' + user.username + '">' + user.role.name + '</a></td>'
-
-            if (user.department != undefined)
-                content += '<td><a id="donvi' + user.username + '">' + user.department + '</a></td>'
-            else
-                content += '<td><a id="donvi' + user.username + '"></a></td>'
-
-            // console.log(user.confirmed)
-            content += '<td><a id="cokichhoat' + user.username + '">'
-            if (user.confirmed == true) {
-                content += '<i class="fas fa-toggle-on" style="font-size: 25px; color: #4166D5; "></i></a>'
-            } else {
-                content += '<i class="fas fa-toggle-off" style="font-size: 25px; color: #4166D5; "></i></a>'
-            }
-            content += '<a id="kichhoat"' + user.username + '" hidden="true">' + user.confirmed + '</a></td></tr>'
-        }
-
-        content += '</tbody></table>'
-
-        $('#tableUsers').html(content)
-    }
-</script>
-
-<script>
+    let reportEdit
+    let start
+    let next
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -383,40 +187,165 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function edit(id) {
-        let gt;
-        gt = document.getElementById('tendn' + id).textContent.trim();
-        document.getElementById("edtTenDN").value = gt;
-
-        gt = document.getElementById('ten' + id).textContent.trim();
-        document.getElementById("edtTen").value = gt;
-
-        gt = document.getElementById('gioitinh' + id).textContent.trim();
-        // console.log(gt)
-        if (gt == 'Nam') {
-            document.getElementById("radNam").checked = true;
-        } else {
-            document.getElementById("radNu").checked = true;
-        }
-
-        gt = document.getElementById('email' + id).textContent.trim();
-        document.getElementById("edtEmail").value = gt;
-
-
-        gt = document.getElementById('loai' + id).textContent.trim();
-        if (gt == 'student') {
-            document.getElementById("loai1").checked = true;
-        } else if (gt == 'teacher') {
-            document.getElementById("loai2").checked = true;
-        } else {
-            document.getElementById("loai3").checked = true;
-        }
-
-        gt = document.getElementById('kichhoat' + id).textContent.trim();
-        console.log(gt)
-        // if (gt == 'true') {
-        //     document.getElementById("kichhoat").checked = true;
+    async function countReports() {
+        let countU = await $.ajax({
+            type: 'GET',
+            url: "http://112.109.93.135:1996/reports/count",
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            },
+        });
+        return parseInt(countU)
     }
+
+    async function putR() {
+
+        reportEdit.report_status._id = $("input[name='report_status']:checked").val()
+        reportEdit.notes = $('#edtNotes').val()
+
+        let put = await $.ajax({
+            type: 'PUT',
+            url: 'http://112.109.93.135:1996/reports/' + reportEdit.id,
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            },
+            data: reportEdit
+        })
+        getReports(next)
+    }
+
+    async function edit(id) {
+
+        console.log('edit')
+
+        let report = await getR(id)
+        // edtTitle
+        $('#edtTitle').val(report.title)
+        $('#edtDetail').val(report.detail)
+
+        $('#type').attr('href', '/loaibaocao/' + report.report_type.id)
+        $('#type').text(report.report_type.name)
+
+        $('#room').attr('href', '/phong/' + report.room.id)
+        $('#room').text(report.room.name)
+
+        $('#user').attr('href', '/taikhoan/' + report.user.id)
+        $('#user').text(report.user.fullname)
+
+        $('#edtNotes').val(report.notes)
+
+        if (report.report_status.name == 'Đã tiếp nhận') {
+            document.getElementById("loai1").checked = true
+        } else if (report.report_status.name == 'Đang xử lý') {
+            document.getElementById("loai2").checked = true
+        } else if (report.report_status.name == 'Đã xử lý') {
+            document.getElementById("loai3").checked = true
+        }
+        reportEdit = report
+    }
+
+    $(document).ready(async function () {
+
+        let countR = await countReports()
+        console.log(countR + ' reports')
+
+        getReports(1)
+
+        let nav = '<li id ="lili-1" class="page-item"><button class="page-link" onClick="getreports(-1)"><<</button></li>'
+        nav += '<li id ="lili1" class="page-item"><button class="page-link" onClick="getreports(1)">1</button></li>'
+        for (let i = 2; i < countR / 10 + 1; i++) {
+            nav += '<li id ="lili' + i + '" class="page-item"><button class="page-link" onClick="getreports(' + i + ')">' + i + '</button></li>'
+        }
+
+        if (countR > 2)
+            nav += '<li id ="lili0" class="page-item"><button class="page-link" onClick="getreports(0)">>></button></li>'
+
+        $('#navi').html(nav)
+
+        $("#btnSearch").on('click', (async function () {
+        }))
+
+    })
+    async function getReports(i) {
+
+        let sum = await countReports()
+
+        let pre = parseInt($('#phantrang').text())
+        next = i == -1 ? pre - 1 : i == 0 ? pre + 1 : i
+
+        if (next > sum / 10 + 1 || next < 1) {
+            return
+        }
+        else {
+            $('#phantrang').text(next)
+        }
+
+        console.log('sum: ' + sum)
+        console.log('pre: ' + pre)
+        console.log('next: ' + next)
+
+
+        i = next
+        start = i * 10 - 9;
+        if (start > sum) return
+        console.log('start ' + start)
+        let reports = await $.ajax({
+            type: 'GET',
+            url: "http://112.109.93.135:1996/reports?_start=" + start + "&_limit=10",
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            },
+        })
+        console.log(reports[0].detail)
+
+        let content = '<table class="table table-hover">'
+            + '<thead>'
+            + '<tr style="color: #4166D5; font-size: 18px; background: white;">'
+            + '<th style="width: 3px;"></th>'
+            + '<th>Nhóm</th>'
+            + '<th>Nội dung</th>'
+            + '<th>Chi tiết</th>'
+            + '<th>Phòng</th>'
+            + '<th>Trạng thái</th>'
+            + '</tr>'
+
+            + '</thead> <tbody>'
+
+        for (let report of reports) {
+
+            content += '<tr><td style=" width: 3px; font-size: 20px; background: white; "><button id="' + report.id + '" type="button" class="btn btn-primary" data-target="#dialogEdit" data-toggle="modal" onClick="edit(this.id)">'
+            content += '<a style="color: white;" data-target="#dialogEdit" ><i class="fas fa-edit "></i></a></button></td>'
+            content += '<td><a id="nhom' + report.id + '">' + report.report_type.name + '</a></td>'
+            content += '<td><a id="noiDung' + report.id + '">' + report.title + '</a></td>'
+            content += '<td><a id="chiTiet' + report.id + '">' + report.detail + '</a></td>'
+            content += '<td><a id="phong' + report.id + '">' + report.room.name + '</a></td>'
+            if (report.report_status.name == 'Đã xử lý') {
+                content += '<td><i class="fas fa-check-square" style="font-size: 25px; color: #4166D5; "></i><a>&nbsp&nbspĐã xử lý</a></td>'
+            } else if (report.report_status.name == 'Đang xử lý') {
+                content += '<td><i class="fas fa-tasks" style="font-size: 25px; color: #085943; "></i><a>&nbsp&nbspĐang xử lý</a></td>'
+            } else if (report.report_status.name == 'Đã tiếp nhận') {
+                content += '<td><i class="fas fa-save" style="font-size: 25px; color: #e74a3b; "></i><a>&nbsp&nbspĐã tiếp nhận</a></td>'
+            }
+        }
+
+        content += '</tr></tbody></table>'
+
+        $('#tablereports').html(content)
+    }
+
+    async function getR(id) {
+        return await $.ajax({
+            type: 'GET',
+            url: 'http://112.109.93.135:1996/reports/' + id,
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            }
+        })
+    }
+
+</script>
+
+<script>
 
     async function test() {
         //document.getElementById("addTenDN").value = 'hihi';
