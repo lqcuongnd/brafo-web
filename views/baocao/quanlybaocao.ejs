@@ -41,14 +41,49 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 id="title" class="h3 mb-0 text-gray-800">Quản lý báo cáo</h1>
 
+                        <link rel="stylesheet"
+                            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+
+                        <div>
+                            <div id="locNhom" class="btn-group">
+
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary dropdown-toggle"       type="button"
+                                          id="dropTT" data-toggle="dropdown">
+                                    Lọc trạng thái
+                                       </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" onclick="setStatus('Tất cả trạng thái')">Tất cả</a>
+                                    <a class="dropdown-item" onclick="setStatus('Đã tiếp nhận')">Đã tiếp nhận</a>
+                                    <a class="dropdown-item" onclick="setStatus('Đang xử lý')">Đang xử lý</a>
+                                    <a class="dropdown-item" onclick="setStatus('Đã xử lý')">Đã xử lý</a>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <!-- <div id="table" hidden="false"> -->
+
+                    <!-- <div id="tongQuan">
+                        <a>Báo cáo lỗi máy in. Tổng cộng: 10 báo cáo. Đã tiếp nhận: 6, Đang xử lý: 2, Đã xử lý: 2</a> 
+                        <!-- <p id="phantrang" hidden="true">1</p> -->
+                    <!-- <ul class="pagination" id="navi" style="float: right;"> -->
+                        <!-- </div>
+                    </ul>
+                    </div> -->
+
+                    <div>
+                        <ul class="pagination" id="tongQuan" style="float: left;">
+                             
+                        </ul>
+                        <ul class="pagination" id="navi" style="float: right;">
+
+                        </ul>
+                    </div>
                     <div id='tablereports'></div>
 
-                    <p id="phantrang" hidden="true">1</p>
-                    <ul class="pagination" id="navi" style="float: right;">
-                        <!-- </div> -->
-                    </ul>
+                    
                 </div>
                 <!-- End of Main Content -->
 
@@ -169,8 +204,8 @@
         <a class="scroll-to-top rounded " href="#page-top ">
             <i class="fas fa-angle-up "></i>
         </a>
-        
-<!-- <% include ../partials/chatbox %> -->
+
+        <!-- <% include ../partials/chatbox %> -->
 </body>
 
 <script></script>
@@ -180,22 +215,70 @@
     let reportEdit
     let start
     let next
+    let locTT = ''
+    let locType = ''
+    let typeName = ''
+
+    function setStatus(dk) {
+        if (dk != 'Tất cả trạng thái') {
+            locTT = 'report_status.name=' + dk + '&'
+        }
+        else {
+            locTT = ''
+        }
+        $('#dropTT').html("Button New Text");
+        console.log( $('#dropTT'))
+        getReports(1)
+    }
+    function setType(dk) {
+            console.log('/' + dk + '/')
+        if (dk != '0') {
+            locType = 'report_type.id=' + dk + '&'
+            typeName = $('#'+dk).text()
+        }
+        else {
+            locType = ''
+        }
+        getReports(1)
+    }
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
-
-    async function countReports() {
-        let countU = await $.ajax({
+    async function getTypes() {
+        let types = await $.ajax({
             type: 'GET',
-            url: "http://112.109.93.135:1996/reports/count",
+            url: "http://112.109.93.135:1996/obj-types",
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            }
+        });
+        // locNhom
+        let code = '<button class="btn btn-primary dropdown-toggle"       type="button"       id="dropdownMenuButton" data-toggle="dropdown">Lọc theo nhóm</button>'
+        code += '<div class="dropdown-menu">'
+        code += '<a id = "0" class="dropdown-item" onclick="setType(this.id)">Tất cả</a>'
+        for (let type of types) {
+            let n = type.id
+            code += '<a id = "' + n + '" class="dropdown-item" onclick="setType(this.id)">' + type.name + '</a>'
+        }
+        code += '</div>'
+        // console.log(code)
+        $('#locNhom').html(code)
+    }
+    async function countReports() {
+        let urll = "http://112.109.93.135:1996/reports/count?" + locTT + locType
+        console.log('count ' + urll)
+        let countR = await $.ajax({
+            type: 'GET',
+            url: urll,
             headers: {
                 "Authorization": 'Bearer ' + getCookie('jwt')
             },
         });
-        return parseInt(countU)
+        console.log(countR)
+        return parseInt(countR)
     }
 
     async function putR() {
@@ -244,29 +327,61 @@
         reportEdit = report
     }
 
-    $(document).ready(async function () {
+    async function checkIsChanged() {
+        let chk = await $.ajax({
+            type: 'GET',
+            url: 'http://112.109.93.135:1996/db-statuses/' + '5f11ebdf5cec188c7faa4e65',
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            }
+        })
+        let val = chk.is_changed
+        if (val) {
+            chk.is_changed = false
+            let ạ = await $.ajax({
+                type: 'PUT',
+                url: 'http://112.109.93.135:1996/db-statuses/' + '5f11ebdf5cec188c7faa4e65',
+                headers: {
+                    "Authorization": 'Bearer ' + getCookie('jwt')
+                },
+                data: chk
+            })
+        }
+        return val
+    }
 
+    async function getR(id) {
+        return await $.ajax({
+            type: 'GET',
+            url: 'http://112.109.93.135:1996/reports/' + id,
+            headers: {
+                "Authorization": 'Bearer ' + getCookie('jwt')
+            }
+        })
+    }
+
+    async function getReports(i) {
+
+        // getNav()
         let countR = await countReports()
+        let str = 'Tổng cộng: ' + countR + ' báo cáo '
+        if(locType != '')
+            str += ' nhóm ' + typeName 
+        $('#tongQuan').html(str)
+
         console.log(countR + ' reports')
+        console.log("http://112.109.93.135:1996/reports?" + locTT + locType + "_start=" + start + "&_limit=10")
 
-        getReports(1)
-
-        let nav = '<li id ="lili-1" class="page-item"><button class="page-link" onClick="getreports(-1)"><<</button></li>'
-        nav += '<li id ="lili1" class="page-item"><button class="page-link" onClick="getreports(1)">1</button></li>'
+        let nav = '<li id ="lili-1" class="page-item"><button class="page-link" onClick="getReports(-1)"><<</button></li>'
+        nav += '<li id ="lili1" class="page-item"><button class="page-link" onClick="getReports(1)">1</button></li>'
         for (let i = 2; i < countR / 10 + 1; i++) {
-            nav += '<li id ="lili' + i + '" class="page-item"><button class="page-link" onClick="getreports(' + i + ')">' + i + '</button></li>'
+            nav += '<li id ="lili' + i + '" class="page-item"><button class="page-link" onClick="getReports(' + i + ')">' + i + '</button></li>'
         }
 
         if (countR > 2)
-            nav += '<li id ="lili0" class="page-item"><button class="page-link" onClick="getreports(0)">>></button></li>'
+            nav += '<li id ="lili0" class="page-item"><button class="page-link" onClick="getReports(0)">>></button></li>'
 
         $('#navi').html(nav)
-
-        $("#btnSearch").on('click', (async function () {
-        }))
-
-    })
-    async function getReports(i) {
 
         let sum = await countReports()
 
@@ -284,19 +399,21 @@
         console.log('pre: ' + pre)
         console.log('next: ' + next)
 
-
         i = next
-        start = i * 10 - 9;
+        start = i * 10 - 10;
         if (start > sum) return
         console.log('start ' + start)
+        let urll = "http://112.109.93.135:1996/reports?" + locTT + locType + "_start=" + start + "&_limit=10"
+        console.log(urll)
         let reports = await $.ajax({
             type: 'GET',
-            url: "http://112.109.93.135:1996/reports?_start=" + start + "&_limit=10",
+            //reports?report_status.name=Đã tiếp nhận&_start=0&_limit=10
+            url: urll,
             headers: {
                 "Authorization": 'Bearer ' + getCookie('jwt')
             },
         })
-        console.log(reports[0].detail)
+        // console.log(reports[0].detail)
 
         let content = '<table class="table table-hover">'
             + '<thead>'
@@ -333,30 +450,24 @@
         $('#tablereports').html(content)
     }
 
-    async function getR(id) {
-        return await $.ajax({
-            type: 'GET',
-            url: 'http://112.109.93.135:1996/reports/' + id,
-            headers: {
-                "Authorization": 'Bearer ' + getCookie('jwt')
+    async function getNav() {
+
+    }
+
+    $(document).ready(async function () {
+
+        await getTypes()
+
+        getReports(1)
+        window.setInterval(async function () {
+            let chk = await checkIsChanged()
+            console.log('new data: ' + chk)
+            if (chk) {
+                getReports(1)
             }
-        })
-    }
+        }, 3000)
 
-</script>
-
-<script>
-
-    async function test() {
-        //document.getElementById("addTenDN").value = 'hihi';
-        let id = document.getElementById('addTenDN').textContent.trim();
-        //alert("d");
-        let test = await db.getUser(id);
-
-        if (test == false) {
-            alert('Tên đăng nhập đã tồn tại');
-        }
-    }
+    })
 </script>
 
 </html>
