@@ -116,7 +116,8 @@ module.exports = {
         try {
             const response = await axios(config)
             let dt = response.data
-            console.log(dt)
+            // console.log(dt)
+            return dt
         } catch (error) {
             console.log(error.response.body)
         }
@@ -132,6 +133,8 @@ module.exports = {
             const response = await axios(config)
             let dt = response.data
             console.log(dt)
+            return dt
+
         } catch (error) {
             console.log(error.response.body)
         }
@@ -147,6 +150,8 @@ module.exports = {
             const response = await axios(config)
             let dt = response.data
             console.log(dt)
+            return dt
+
         } catch (error) {
             console.log(error.response.body)
         }
@@ -162,6 +167,8 @@ module.exports = {
             const response = await axios(config)
             let dt = response.data
             console.log(dt)
+            return dt
+
         } catch (error) {
             console.log(error.response.body)
         }
@@ -178,6 +185,8 @@ module.exports = {
             const response = await axios(config)
             let dt = response.data
             console.log(dt)
+            return dt
+
         } catch (error) {
             console.log(error.response.body)
         }
@@ -194,6 +203,8 @@ module.exports = {
             const response = await axios(config)
             let dt = response.data
             console.log(dt)
+            return dt
+
         } catch (error) {
             console.log(error.response.body)
         }

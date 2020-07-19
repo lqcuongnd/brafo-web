@@ -2,7 +2,7 @@
 
 var express = require('express')
 var database = require('../my_modules/db')
-var userRouter = express.Router()
+var reportRouter = express.Router()
 var bodyParser = require('body-parser')
 let apis = require('../my_modules/apis')
 const exceljs = require('exceljs');
@@ -12,19 +12,19 @@ let cookieParser = require('cookie-parser')
 const { resolve } = require('path')
 require('dotenv').config({ path: resolve("../.env") })
 
-userRouter.use(bodyParser.urlencoded({ extended: false }))
+reportRouter.use(bodyParser.urlencoded({ extended: false }))
 //userRouter.use(bodyParser())
 
-userRouter.use(function (req, res, next) {
+reportRouter.use(function (req, res, next) {
     res.locals.userValue = null
     next()
 })
-userRouter.use(cookieParser())
+reportRouter.use(cookieParser())
 
 //MẶC ĐỊNH ROUTE ĐÃ LÀ /taikhoan RỒI
 
 
-userRouter.get('/', async function (req, res, next) {
+reportRouter.get('/', async function (req, res, next) {
     console.log("GET: BAO CAO")
 
     if (req.cookies.auth != undefined) {
@@ -41,7 +41,7 @@ userRouter.get('/', async function (req, res, next) {
         res.render('pages/login')
     }
 })
-userRouter.get('/reportsExceljs.xlsx', async (req, res) => {
+reportRouter.get('/reportsExceljs.xlsx', async (req, res) => {
     console.log('ex')
     let jwt = req.cookies.auth.jwt
     var workbook = new exceljs.Workbook();
@@ -106,13 +106,13 @@ userRouter.get('/reportsExceljs.xlsx', async (req, res) => {
     readStream.pipe(res);
 })
 //=====================================================================
-userRouter.get('/getexportsexceljs', async (req, res) => {
+reportRouter.get('/getexportsexceljs', async (req, res) => {
     // var x = await exceljs.exports();
     res.redirect('/reportsExceljs.xlsx');
     console.log(x);
 });
 
-userRouter.get('/export', async function (req, res, next) {
+reportRouter.get('/export', async function (req, res, next) {
     console.log("GET: EXPORT")
 
     if (req.cookies.auth != undefined) {
@@ -129,7 +129,7 @@ userRouter.get('/export', async function (req, res, next) {
     }
 })
 
-userRouter.get('/:t', async function (req, res, next) {
+reportRouter.get('/:t', async function (req, res, next) {
     let test = await apis.orgInfo()
 
     if (user == null) {
@@ -156,29 +156,10 @@ userRouter.get('/:t', async function (req, res, next) {
         res.render('baocao/quanlybaocao', { reportList: list, title: tt, t: test.info })
     }
 })
+// reportRouter.get('/download', function(req, res){
+//     const file = `${__dirname}/routes/bc.xlsx`;
+//     res.download(file); // Set disposition and send it.
+//   });
 
-userRouter.post('/capnhatbaocao', async function (req, res, next) {
-    if (user == null) {
-        link = '/capnhatbaocao'
-        res.redirect('/dangnhap')
-    } else {
-        let ma = req.body.Ma
-        let c = req.body.ChuThich
-        let ktv = user.get('Ten')
-        let tt = req.body.TrangThai
 
-        let ct = c + '\n'
-
-        let data = {
-            ChuThich: ct,
-            MaKTV: ktv,
-            TrangThai: tt,
-        }
-
-        await database.editReport(ma, data)
-
-        res.redirect('/baocao')
-    }
-})
-
-module.exports = userRouter
+module.exports = reportRouter
