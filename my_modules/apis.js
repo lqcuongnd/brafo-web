@@ -107,4 +107,97 @@ module.exports = {
         }
     },
 
+    getCount: async function (jwt) {
+        const config = {
+            method: 'get',
+            url: baseUrl + 'reports/count',
+            headers: {'Authorization': 'Bearer '+ jwt}
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+    getCountXuLy: async function (jwt) {
+        const config = {
+            method: 'get',
+            url: baseUrl + 'reports/count?report_status.name=Đã xử lý',
+            headers: {'Authorization': 'Bearer '+ jwt}
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+    getCountDangXuLy: async function (jwt) {
+        const config = {
+            method: 'get',
+            url: baseUrl + 'reports/count?report_status.name=Đang xử lý',
+            headers: {'Authorization': 'Bearer '+ jwt}
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+    getCountDaTiepNhan: async function (jwt) {
+        const config = {
+            method: 'get',
+            url: baseUrl + 'reports/count?report_status.name=Đã tiếp nhận',
+            headers: {'Authorization': 'Bearer '+ jwt}
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+
+    getTypes: async function (jwt) {
+        const config = {
+            method: 'get',
+            url: baseUrl + 'obj-types',
+            headers: {'Authorization': 'Bearer '+ jwt}
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+
+    countByType: async function (jwt, type) {
+        const config = {
+            method: 'get',
+            url: baseUrl + 'reports?report_type.name=' + type,
+            headers: {'Authorization': 'Bearer '+ jwt}
+        }
+        try {
+            const response = await axios(config)
+            let dt = response.data
+            console.log(dt)
+        } catch (error) {
+            console.log(error.response.body)
+        }
+    },
+
+
 }
