@@ -28,7 +28,7 @@
         "node-persist": "0.0.8",
         "querystring": "^0.2.0",
         "request": "^2.88.2",
-        "socket.io": "^2.3.0",
+        "socket.io": "^2.5.0",
         "store": "^2.0.12",
         "url": "^0.11.0"
     }
